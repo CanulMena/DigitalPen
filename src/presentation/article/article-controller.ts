@@ -35,15 +35,8 @@ export class ArticleController {
 
   public getArticlesByStatus = (req: Request, res: Response) => {
 
-    const status = req.params.status;
-    //TODO: TODO ESTO SE PUEDE PASAR A UN DTO.
-    if (!status) throw CustomError.badRequest('param status is required');
-    if (typeof status !== 'string') throw CustomError.badRequest('param status must be a string');
-    const normalizedStatus = status.toUpperCase();
-    if (!ArticleEntity.isValidStatus(normalizedStatus)) throw CustomError.badRequest(`Invalid status - valid ones: ${ArticleEntity.validStatus.join(', ')}`)
-    
     new ArticleService()
-    .getArticlesByStatus(normalizedStatus as StatusArticulo)
+    .getArticlesByStatus()
     .then( articles => res.status(200).json(articles))
     .catch( error => this.handleError(error, res));
 

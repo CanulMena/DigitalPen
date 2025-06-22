@@ -33,18 +33,13 @@ export class ArticleService {
     });
 
     if (!articleData) throw CustomError.internalServer('Article not created');
-    
-    console.log(articleData);
-
     const articleEntity = ArticleEntity.fromJson(articleData);
-    console.log(articleEntity);
     return articleEntity;
   }
 
-  // Obtener todos los artículos filtrando por status (ACTIVO o DESACTIVO)
-  public async getArticlesByStatus(status: StatusArticulo): Promise<ArticleEntity[]> {
+  public async getArticlesByStatus(): Promise<ArticleEntity[]> {
     const articles = await this.prisma.findMany({
-      where: { status },
+      where: { status: 'ACTIVO' },
       include: {
         usuario: {
           select: {

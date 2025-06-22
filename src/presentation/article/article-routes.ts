@@ -22,8 +22,7 @@ export class ArticleRoutes {
     );
 
     router.get(
-      '/get-articles-by-status/:status',
-      authMiddleware.validateJWT,
+      '/get-articles',
       articleController.getArticlesByStatus
     );
 
