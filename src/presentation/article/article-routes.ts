@@ -32,6 +32,12 @@ export class ArticleRoutes {
       articleController.getArticlesByUser
     );
 
+    router.put(
+      '/update-article/:articleId',
+      authMiddleware.validateJWT,
+      articleController.updateArticle
+    )
+
     return router;
 
   }

@@ -5,6 +5,7 @@ import { ArticleService } from '../services/article-service';
 import { UserEntity } from '../../domain/entities/user';
 import { ArticleEntity } from '../../domain/entities/article';
 import { StatusArticulo } from '@prisma/client';
+import { UpdateArticleDto } from '../../domain/dtos/update-article.dto';
 
 export class ArticleController {
   constructor (){}
@@ -36,7 +37,7 @@ export class ArticleController {
   public getArticlesByStatus = (req: Request, res: Response) => {
 
     new ArticleService()
-    .getArticlesByStatus()
+    .getArticles()
     .then( articles => res.status(200).json(articles))
     .catch( error => this.handleError(error, res));
 
@@ -48,6 +49,22 @@ export class ArticleController {
     new ArticleService()
     .getArticlesByUser(user.userId)
     .then( articles => res.status(200).json(articles))
+    .catch( error => this.handleError(error, res));
+  }
+
+  public updateArticle = (req: Request, res: Response) => {
+    const user: UserEntity = req.body.user;
+    const articleId = +req.params.articleId; //* +req..... sirve para convertirlo un tipo number si es que era string
+    const [ error, updateArticleDto] = UpdateArticleDto.create({articleId, ...req.body});
+
+    if (error) {
+      res.status(400).json({ error: 'Internal Server Error' })
+      return;
+    }
+
+    new ArticleService()
+    .updateArticle(user, updateArticleDto!)
+    .then( articleUpdated => res.status(200).json({ articleUpdated }))
     .catch( error => this.handleError(error, res));
   }
 

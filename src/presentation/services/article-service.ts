@@ -3,6 +3,7 @@ import { PrismaClient, StatusArticulo } from '@prisma/client';
 import { ArticleEntity } from '../../domain/entities/article';
 import { CustomError } from '../../domain/errors/custom-error';
 import { UserEntity } from '../../domain/entities/user';
+import { UpdateArticleDto } from '../../domain/dtos/update-article.dto';
 
 export class ArticleService {
 
@@ -37,7 +38,7 @@ export class ArticleService {
     return articleEntity;
   }
 
-  public async getArticlesByStatus(): Promise<ArticleEntity[]> {
+  public async getArticles(): Promise<ArticleEntity[]> {
     const articles = await this.prisma.findMany({
       where: { status: 'ACTIVO' },
       include: {
@@ -74,6 +75,45 @@ export class ArticleService {
     return articles.map(article => ArticleEntity.fromJson(article));
   }
 
-  //TODO: ACTUALIZAR LOS ARTICULOS POR USUARIO (UN USUARIO NO PROPIO NO DEBERÀ DE PODER ACTUALIZAR EL ARTICULO DE OTRO USUARIO)
+  public async updateArticle(user: UserEntity, updateArticleDto: UpdateArticleDto): Promise<ArticleEntity> {
+    // 1. Buscar el artículo por id
+    const existing = await this.prisma.findUnique({
+      where: { id: updateArticleDto.id },
+      include: {
+        usuario: {
+          select: { id: true, nombre: true, correo: true }
+        }
+      }
+    });
+
+    if (!existing) throw CustomError.notFound('Article not found');
+
+    // 2. Validar que el usuario sea el dueño
+    if (existing.usuarioId !== user.userId) {
+      throw CustomError.unAuthorized('You are not the owner of this article');
+    }
+
+    // 3. Preparar los datos a actualizar (solo los campos definidos)
+    const data: any = {};
+    if (updateArticleDto.title !== undefined) data.titulo = updateArticleDto.title;
+    if (updateArticleDto.introduccion !== undefined) data.introduccion = updateArticleDto.introduccion;
+    if (updateArticleDto.descripcion !== undefined) data.descripcion = updateArticleDto.descripcion;
+    if (updateArticleDto.urlFoto !== undefined) data.foto = updateArticleDto.urlFoto;
+    if (updateArticleDto.status !== undefined) data.status = updateArticleDto.status as StatusArticulo;
+    if (updateArticleDto.fecha !== undefined) data.fecha = new Date(updateArticleDto.fecha).toISOString();
+
+    // 4. Actualizar el artículo
+    const updated = await this.prisma.update({
+      where: { id: updateArticleDto.id },
+      data,
+      include: {
+        usuario: {
+          select: { id: true, nombre: true, correo: true }
+        }
+      }
+    });
+
+    return ArticleEntity.fromJson(updated);
+  }
 
 }
