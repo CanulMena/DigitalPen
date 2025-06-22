@@ -29,6 +29,7 @@ export class ArticleRoutes {
 
     router.get(
       '/get-articles-by-user',
+      authMiddleware.validateJWT,
       articleController.getArticlesByUser
     );
 
