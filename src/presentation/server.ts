@@ -7,7 +7,7 @@ export interface ServerAppOptions {
 }
 
 export class AppServer {
-    private app = express();
+    public app = express();
     private readonly port: number;
     private readonly routes: Router;
 
