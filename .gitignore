@@ -1,0 +1,17 @@
+# Ignora la carpeta de dependencias
+node_modules/
+# Ignora la carpeta de compilación
+dist/
+# Ignora el archivo de configuración de entorno 
+.env
+# Ignora la carpeta de dependencias de postgres - Docker
+postgres/
+#Ignora la carpeta de dependencias de prisma
+# prisma/
+#Igonorar imagenes temporales
+/tmp
+#ignorar archivos del file-system datasource
+/upload
+
+# Ignorar todas las fotos en la carpeta uploads
+uploads/*
