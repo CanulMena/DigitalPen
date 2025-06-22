@@ -9,3 +9,11 @@ Este proyecto previamente inicializado tiene todo lo necesario para trabajar con
 3. Ejecutar el comando ``` docker compose up -d ```
 4. Ejecutar el comando ``` prisma migrate dev ```
 5. Ejecutar el comando ``` npm run dev ```
+
+
+
+
+    // "dev": "tsnd --respawn --clear src/app.ts",
+    // "build": "rimraf ./dist && tsc && npm run prisma:migrate:prod",
+    // "start": "npm run build && node dist/app.js",
+    // "prisma:migrate:prod": "prisma migrate deploy"
