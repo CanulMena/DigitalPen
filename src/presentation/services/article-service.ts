@@ -41,16 +41,44 @@ export class ArticleService {
     return articleEntity;
   }
 
-  //TODO: OBTENER TODOS LOS ARTICULOS QUE ESTAN ACTIVOS / INACTIVOS.
-  //TODO: OBTENER TODOS LOS ARTICULOS POR USUARIO.
+  // Obtener todos los artículos filtrando por status (ACTIVO o DESACTIVO)
+  public async getArticlesByStatus(status: StatusArticulo): Promise<ArticleEntity[]> {
+    const articles = await this.prisma.findMany({
+      where: { status },
+      include: {
+        usuario: {
+          select: {
+            id: true,
+            nombre: true,
+            correo: true,
+          }
+        }
+      }
+    });
+
+    return articles.map(ArticleEntity.fromJson);
+  }
+
+  // Obtener todos los artículos de un usuario específico (activos e inactivos si no se pasa status)
+  public async getArticlesByUser(userId: number, status?: StatusArticulo): Promise<ArticleEntity[]> {
+    const where: any = { usuarioId: userId };
+    if (status) where.status = status; // Solo filtra por status si se pasa
+
+    const articles = await this.prisma.findMany({
+      where,
+      include: {
+        usuario: {
+          select: {
+            id: true,
+            nombre: true,
+            correo: true,
+          }
+        }
+      }
+    });
+    return articles.map(article => ArticleEntity.fromJson(article));
+  }
+
   //TODO: ACTUALIZAR LOS ARTICULOS POR USUARIO (UN USUARIO NO PROPIO NO DEBERÀ DE PODER ACTUALIZAR EL ARTICULO DE OTRO USUARIO)
-
-  public async getArticles() {
-    
-  }
-
-  public async getArticle() {
-    
-  }
 
 }

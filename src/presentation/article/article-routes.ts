@@ -2,6 +2,7 @@ import { Router } from "express";
 import { ArticleController } from "./article-controller";
 import { AuthMiddleware } from '../middlewares/auth-middleware';
 import { AuthService } from "../services/auth-service";
+import { ValidStatus } from '../../domain/entities/article';
 
 export class ArticleRoutes {
   
@@ -21,13 +22,14 @@ export class ArticleRoutes {
     );
 
     router.get(
-      '/:articleId',
-      articleController.getArticle
+      '/get-articles-by-status/:status',
+      authMiddleware.validateJWT,
+      articleController.getArticlesByStatus
     );
 
     router.get(
-      '/get-all',
-      articleController.getArticles
+      '/get-articles-by-user',
+      articleController.getArticlesByUser
     );
 
     return router;
