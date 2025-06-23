@@ -4,7 +4,7 @@ export class UpdateArticleDto {
 
   constructor(
     public id: number,
-    public title?: string,
+    public titulo?: string,
     public introduccion?: string,
     public descripcion?: string,
     public urlFoto?: string,
@@ -13,11 +13,11 @@ export class UpdateArticleDto {
   ){}
 
   public static create(props: { [key: string]: any }): [string?, UpdateArticleDto?] {
-    const { id, title, introduccion, descripcion, urlFoto, status, fecha } = props;
+    const { id, titulo, introduccion, descripcion, urlFoto, status, fecha } = props;
 
     if (!id || isNaN(Number(id)) ) return ['id argument must be a valid number'];
 
-    if (title !== undefined && typeof title !== 'string') return ['title must be a string'];
+    if (titulo !== undefined && typeof titulo !== 'string') return ['titulo must be a string'];
     if (introduccion !== undefined && typeof introduccion !== 'string') return ['introduccion must be a string'];
     if (descripcion !== undefined && typeof descripcion !== 'string') return ['descripcion must be a string'];
     if (urlFoto !== undefined && typeof urlFoto !== 'string') return ['urlFoto must be a string'];
@@ -37,7 +37,7 @@ export class UpdateArticleDto {
       undefined,
       new UpdateArticleDto(
         id,
-        title,
+        titulo,
         introduccion,
         descripcion,
         urlFoto,

@@ -95,7 +95,7 @@ export class ArticleService {
 
     // 3. Preparar los datos a actualizar (solo los campos definidos)
     const data: any = {};
-    if (updateArticleDto.title !== undefined) data.titulo = updateArticleDto.title;
+    if (updateArticleDto.titulo !== undefined) data.titulo = updateArticleDto.titulo;
     if (updateArticleDto.introduccion !== undefined) data.introduccion = updateArticleDto.introduccion;
     if (updateArticleDto.descripcion !== undefined) data.descripcion = updateArticleDto.descripcion;
     if (updateArticleDto.urlFoto !== undefined) data.foto = updateArticleDto.urlFoto;

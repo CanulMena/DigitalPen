@@ -54,11 +54,11 @@ export class ArticleController {
 
   public updateArticle = (req: Request, res: Response) => {
     const user: UserEntity = req.body.user;
-    const articleId = +req.params.articleId; //* +req..... sirve para convertirlo un tipo number si es que era string
-    const [ error, updateArticleDto] = UpdateArticleDto.create({articleId, ...req.body});
+    const id = +req.params.articleId; //* +req..... sirve para convertirlo un tipo number si es que era string
+    const [ error, updateArticleDto] = UpdateArticleDto.create({id, ...req.body});
 
     if (error) {
-      res.status(400).json({ error: 'Internal Server Error' })
+      res.status(400).json({ error: error })
       return;
     }
 
