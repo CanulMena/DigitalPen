@@ -30,6 +30,8 @@ model Usuario {
   contrasena String
   rol       Rol        @default(USUARIO)
   articulos Articulo[]
+  registros RegistrosIoT[]
+  alarmasGas   AlarmaGas[]
 }
 
 model Articulo {
@@ -42,4 +44,21 @@ model Articulo {
   fecha        DateTime       @default(now())
   usuarioId    Int
   usuario      Usuario        @relation(fields: [usuarioId], references: [id])
+}
+
+model RegistrosIoT {
+  id          Int      @id @default(autoincrement())
+  fecha       DateTime @default(now())
+  temperatura Float
+  humedad     Float
+  usuarioId   Int
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id])
+}
+
+model AlarmaGas {
+  id          Int      @id @default(autoincrement())
+  fecha       DateTime @default(now())
+  gas         Float
+  usuarioId   Int
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id])
 }
