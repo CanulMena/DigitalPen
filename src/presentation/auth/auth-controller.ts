@@ -3,6 +3,7 @@ import { CustomError } from '../../domain/errors/custom-error';
 import { RegisterUserDto } from '../../domain/dtos/register-user.dto';
 import { AuthService } from '../services/auth-service';
 import { LoginUserDto } from '../../domain/dtos/login-user.dto';
+import { UserEntity } from '../../domain/entities/user';
 
 
 export class AuthController {
@@ -40,6 +41,12 @@ export class AuthController {
     .login(loginUserDto!)
     .then( user => res.status(200).json(user))
     .catch( error => this.handleError(error, res));
+  }
+
+  public checkAuthStatus = async (req: Request, res: Response) => {
+  const user = req.body.user as UserEntity;
+  const { passwordHash, ...userWithoutPassword } = user;
+  res.status(200).json({user: userWithoutPassword});
   }
 
 } 
