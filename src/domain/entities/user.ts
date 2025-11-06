@@ -21,7 +21,7 @@ export class UserEntity {
   }
 
   static fromJson( props: {[key: string]: any} ): UserEntity { //uso de tuplas para retornar un error o un objeto
-    const {  
+    const {
       id,
       nombre,
       correo,
