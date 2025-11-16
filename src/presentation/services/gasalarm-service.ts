@@ -2,6 +2,7 @@
 import { GasAlarmEntity } from "../../domain/entities/gas-alarm";
 import { RegisterGasAlarm } from "../../domain/dtos/register-gas-alarm.dto";
 import { prisma } from "../../config/prisma";
+import { WssService } from "./socket-service";
 
 export class GasAlarmService {
   public async register(registerGasAlarmDto: RegisterGasAlarm): Promise<GasAlarmEntity> {
@@ -12,6 +13,11 @@ export class GasAlarmService {
         usuarioId: registerGasAlarmDto.userId,
       },
     });
+
+    WssService.instance.sendMessageToEveryBody(
+      "GAS_ALARM_REGISTERED",
+      gasAlarmRegisteredData
+    );
 
     return GasAlarmEntity.fromJson(gasAlarmRegisteredData);
   }

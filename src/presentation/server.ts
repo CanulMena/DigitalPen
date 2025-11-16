@@ -8,22 +8,28 @@ export interface ServerAppOptions {
 
 export class AppServer {
     public app = express();
-    private readonly port: number;
+    // private readonly port: number;
     private readonly routes: Router;
 
     constructor(serverAppOptions: ServerAppOptions) {
-        this.port = serverAppOptions.port;
+        // this.port = serverAppOptions.port;
         this.routes = serverAppOptions.routes;
+        this.configure();
+
     }
 
-    async start() {
+    // public setRoutes( router: Router ){
+    //     this.app.use(router);
+    // }
+
+    private configure() {
         this.app.use(cors({ origin: '*' }));
 
         this.app.use(express.json()); // raw json
         this.app.use(this.routes);
 
-        this.app.listen(this.port, () => {
-            console.log(`Server is running on port ${this.port}`);
-        });
+        // this.app.listen(this.port, () => {
+        //     console.log(`Server is running on port ${this.port}`);
+        // });
     }
 }

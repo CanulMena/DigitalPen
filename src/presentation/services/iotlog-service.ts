@@ -3,6 +3,7 @@ import { IoTLogEntity } from "../../domain/entities/iotlog";
 import { CustomError } from "../../domain/errors/custom-error";
 import { RegisterIoTLogDto } from "../../domain/dtos/register-iotlog.dto";
 import { prisma } from "../../config/prisma";
+import { WssService } from "./socket-service";
 
 export class IoTLogService {
   public async register(registerIotlogDto: RegisterIoTLogDto): Promise<IoTLogEntity> {
@@ -17,6 +18,11 @@ export class IoTLogService {
       });
 
       if (!iotLogCreated) throw CustomError.internalServer('Registro IoT no creado');
+
+      WssService.instance.sendMessageToEveryBody(
+        "IOT_LOG_REGISTERED",
+        iotLogCreated
+      );
 
       return IoTLogEntity.fromJson(iotLogCreated);
     } catch (error) {

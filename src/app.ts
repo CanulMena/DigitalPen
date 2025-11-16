@@ -1,5 +1,8 @@
 import { AppRoutes } from "./presentation/routes";
 import { AppServer } from "./presentation/server";
+import { createServer } from 'http';
+import { WssService } from "./presentation/services/socket-service";
+import { envs } from "./config/envs";
 
 
 (async => {
@@ -7,11 +10,22 @@ import { AppServer } from "./presentation/server";
 })();
 
 function main(){
-    const server = new AppServer({
+
+
+    const exrpessServer = new AppServer({
         port: 3000,
         routes: AppRoutes.routes
     });
-    
-    server.start();
-}
 
+    const httpServer = createServer(exrpessServer.app);
+
+    WssService.initWss({ server: httpServer }); // Se crea el servidor del WebSocket con la configuración del servidor (Expres)
+
+    // exrpessServer.setRoutes( AppRoutes.routes );
+
+    httpServer.listen( envs.PORT, () => {
+        console.log(`Server running on port: ${ envs.PORT }`);
+    });
+
+    // exrpessServer.start();
+}
