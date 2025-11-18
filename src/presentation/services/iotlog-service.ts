@@ -34,7 +34,8 @@ export class IoTLogService {
   public async getAll(): Promise<IoTLogEntity[]> {
     try {
       const iotLogs = await prisma.registrosIoT.findMany();
-      return iotLogs.map(IoTLogEntity.fromJson);
+      const logsEntity: IoTLogEntity[] = iotLogs.map( (iotLog) => IoTLogEntity.fromJson(iotLog));
+      return logsEntity;
     } catch (error) {
       console.error("Error fetching IoT logs:", error);
       throw error;

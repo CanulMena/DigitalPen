@@ -29,16 +29,14 @@ export class IoTLogEntity {
       throw CustomError.badRequest('humidity is not valid');
     }
 
-    // if(!humedad) throw CustomError.badRequest('Missing humidity');
-
     if(!usuarioId) throw CustomError.badRequest('Missing userId');
 
     return new IoTLogEntity(
       id,
       newDate,
-      temperatura,
+      usuarioId,
       humedad,
-      usuarioId
+      temperatura,
     );
   }
 }
